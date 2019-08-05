@@ -1,3 +1,4 @@
+import time
 from hashlib import md5
 from time import sleep
 from traceback import print_exc
@@ -53,10 +54,10 @@ class BaiduTranslate(Translator):
                     if self.use_buffer:
                         line_t = self.get_buffer(lang_from, lang_to, line)
                         if line_t is not None:
-                            line_t = self.__translate(line, lang_from, lang_to)
+                            line_t = self.__translate(lang_from, lang_to, line)
                         self.set_buffer(lang_from, lang_to, line, line_t)
                     else:
-                        line_t = self.__translate(line, lang_from, lang_to)
+                        line_t = self.__translate(lang_from, lang_to, line)
 
                     if ret != '':
                         ret += '\n'

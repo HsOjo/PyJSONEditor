@@ -1,3 +1,4 @@
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QMessageBox, QFileDialog
 
 from app import common
@@ -14,6 +15,7 @@ class Application:
         common.log('app_init', 'Info', 'version: %s' % Const.version)
 
         self.qt = QApplication(args)
+        self.qt.setWindowIcon(QIcon('%s/app/res/icon.png' % common.get_runtime_dir()))
 
         Config.load()
         self.lang = None  # type: English
