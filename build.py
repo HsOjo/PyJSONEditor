@@ -37,7 +37,6 @@ for lang_type in LANGUAGES.values():
 
 # reset dist directory.
 shutil.rmtree('./build', ignore_errors=True)
-shutil.rmtree('./dist', ignore_errors=True)
 
 add_data('./app/res/icon.png', './app/res')
 
