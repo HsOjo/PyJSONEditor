@@ -15,6 +15,7 @@ class Application:
         common.log('app_init', 'Info', 'version: %s' % Const.version)
 
         self.qt = QApplication(args)
+        self.qt.setApplicationName(Const.app_name)
         self.qt.setWindowIcon(QIcon('%s/app/res/icon.png' % common.get_runtime_dir()))
 
         Config.load()
@@ -27,10 +28,16 @@ class Application:
             'check_update': self.check_update,
             'load_language': self.load_language,
             'get_language': lambda: self.lang,
+            'set_language': self.set_language,
         }
 
     def load_language(self, language):
         self.lang = load_language(language)
+
+    def set_language(self, language):
+        self.lang = load_language(language)
+        Config.language = language
+        Config.save()
 
     def run(self):
         init_app(events=self.events)

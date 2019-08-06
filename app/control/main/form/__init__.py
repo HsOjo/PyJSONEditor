@@ -54,7 +54,7 @@ class Form(Ui_Form, QWidget):
         self.setupUi(self)
         self.events = kwargs.get('events')  # type: dict
 
-        self.lang = self.events['get_language']()  # type: English
+        self.load_language()
 
         self.tw_content.setColumnWidth(0, 192)
         self.tw_content.setColumnWidth(1, 96)
@@ -66,6 +66,16 @@ class Form(Ui_Form, QWidget):
         self.items = {}
         self.root_twi = None  # type: QTreeWidgetItem
         self.current_twi = None  # type: QTreeWidgetItem
+
+    @property
+    def lang(self):
+        return self.events['get_language']()  # type: English
+
+    def load_language(self):
+        hi = self.tw_content.headerItem()  # type: QTreeWidgetItem
+        hi.setText(0, self.lang.col_key)
+        hi.setText(1, self.lang.col_type)
+        hi.setText(2, self.lang.col_value)
 
     def g_type_combobox(self, type_str, root=False):
         cb = QComboBox()
@@ -131,7 +141,7 @@ class Form(Ui_Form, QWidget):
         item = self.items[id(twi)]  # type: dict
         childs = item.get('childs')
 
-        twi.setText(2, '(%s %s)' % (len(childs), self.lang.node_items))
+        twi.setText(2, self.lang.node_num % (len(childs), self.lang.node_items))
 
         if childs is not None:
             child: QTreeWidgetItem

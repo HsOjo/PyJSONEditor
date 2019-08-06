@@ -31,13 +31,34 @@
    </property>
    <widget class="QMenu" name="m_file">
     <property name="title">
-     <string>文件</string>
+     <string>file</string>
     </property>
     <addaction name="a_open_file"/>
     <addaction name="a_save_file"/>
     <addaction name="a_close_file"/>
    </widget>
+   <widget class="QMenu" name="m_edit">
+    <property name="title">
+     <string>edit</string>
+    </property>
+    <addaction name="a_undo"/>
+    <addaction name="a_redo"/>
+    <addaction name="separator"/>
+    <addaction name="a_cut"/>
+    <addaction name="a_copy"/>
+    <addaction name="a_paste"/>
+    <addaction name="separator"/>
+    <addaction name="a_find"/>
+    <addaction name="a_replace"/>
+   </widget>
+   <widget class="QMenu" name="m_languages">
+    <property name="title">
+     <string>languages</string>
+    </property>
+   </widget>
    <addaction name="m_file"/>
+   <addaction name="m_edit"/>
+   <addaction name="m_languages"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="a_open_file">
@@ -48,17 +69,9 @@
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="a_model">
-   <property name="text">
-    <string>模型</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+1</string>
-   </property>
-  </action>
   <action name="a_close">
    <property name="text">
-    <string>关闭</string>
+    <string>close</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+W</string>
@@ -68,10 +81,72 @@
    <property name="text">
     <string>save_file</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
   </action>
   <action name="a_close_file">
    <property name="text">
     <string>close_file</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="a_undo">
+   <property name="text">
+    <string>undo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="a_redo">
+   <property name="text">
+    <string>redo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+Z</string>
+   </property>
+  </action>
+  <action name="a_copy">
+   <property name="text">
+    <string>copy</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="a_paste">
+   <property name="text">
+    <string>paste</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="a_cut">
+   <property name="text">
+    <string>cut</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="a_find">
+   <property name="text">
+    <string>find</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="a_replace">
+   <property name="text">
+    <string>replace</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
    </property>
   </action>
  </widget>
