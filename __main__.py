@@ -1,4 +1,5 @@
 import os
+import platform
 import sys
 
 from app import Application, common
@@ -8,7 +9,14 @@ from app.res.const import Const
 if getattr(sys, 'frozen', False):
     common.fix_encoding_in_pyinstaller()
 
-    log_dir = os.path.expanduser('~/Library/Logs/')
+    sys_type = platform.system()
+
+    if sys_type == 'Darwin':
+        log_dir = os.path.expanduser('~/Library/Logs/')
+    elif sys_type == 'Windows':
+        log_dir = os.path.expanduser('~/AppData/Local/Temp')
+    else:
+        log_dir = ''
 
     path_log = '%s/%s.log' % (log_dir, Const.app_name)
     path_err = '%s/%s.err' % (log_dir, Const.app_name)

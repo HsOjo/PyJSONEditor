@@ -1,5 +1,6 @@
 import platform
 import shutil
+import subprocess
 import sys
 from zipfile import ZipFile
 
@@ -37,13 +38,15 @@ for lang_type in LANGUAGES.values():
 
 # reset dist directory.
 shutil.rmtree('./build', ignore_errors=True)
+shutil.rmtree('./dist/%s.app' % Const.app_name, ignore_errors=True)
 
 add_data('./app/res/icon.png', './app/res')
 
 data_str = ''
 for k, v in datas.items():
-    data_str += ' \\\n\t'
-    data_str += '--add-data "%s:%s"' % (k, v)
+    data_str += ' '
+    sep = ';' if sys_type == 'Windows' else ':'
+    data_str += '--add-data "%s%s%s"' % (k, sep, v)
 
 common.log('Build', 'Info', 'Pyinstaller packing now...')
 
@@ -52,9 +55,10 @@ if sys_type == 'Darwin':
 else:
     path_icon = './app/res/icon.ico'
 
-pyi_cmd = 'pyinstaller -F -w -n "%s" -i "%s" %s \\\n__main__.py' % (Const.app_name, path_icon, data_str)
+pyi_cmd = 'pyinstaller -F -w -n "%s" -i "%s" %s __main__.py' % (Const.app_name, path_icon, data_str)
 print(pyi_cmd)
-os.system(pyi_cmd)
+p = subprocess.Popen(pyi_cmd, env=os.environ, stdout=sys.stdout, shell=True)
+p.wait()
 os.unlink('./%s.spec' % Const.app_name)
 shutil.rmtree('./build', ignore_errors=True)
 
