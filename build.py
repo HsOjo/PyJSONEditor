@@ -70,6 +70,6 @@ if sys_type == 'Darwin':
             path = os.path.join(d, f)
             z_path = path[7:].strip(os.path.sep)
             zf.write(path, z_path)
-        zf.close()
+    zf.close()
 
 common.log('Build', 'Info', 'Build finish.')
