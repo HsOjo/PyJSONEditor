@@ -1,5 +1,5 @@
 from PyQt5.QtCore import QModelIndex, Qt
-from PyQt5.QtWidgets import QWidget, QTreeWidgetItem, QComboBox
+from PyQt5.QtWidgets import QWidget, QTreeWidgetItem, QComboBox, QCheckBox
 
 from app.res.language.english import English
 from app.res.view.form.self import Ui_Form
@@ -23,6 +23,7 @@ def json_type_to_python(type_str, data=None, default=None):
     if data is None:
         return v_type
     else:
+        data_type = type(data)
         if isinstance(data, str):
             if v_type == str:
                 return data
@@ -36,14 +37,14 @@ def json_type_to_python(type_str, data=None, default=None):
                     value = default
                 return value
             elif v_type == bool:
-                return bool(data)
-        elif type(data) in [int, float] and type_str == 'Number':
+                return data.lower() not in ['no', 'false', '0', 'none', 'f', 'n']
+        elif data_type in [int, float] and type_str == 'Number':
             return data
-        else:
-            try:
-                return v_type(data)
-            except:
-                return default
+
+        try:
+            return v_type(data)
+        except:
+            return default
 
 
 class Form(Ui_Form, QWidget):
@@ -102,6 +103,29 @@ class Form(Ui_Form, QWidget):
             cb.currentTextChanged.connect(cb_changed)
             cb.setFocus()
 
+    def show_cb_boolean_value(self, twi: QTreeWidgetItem):
+        item = self.items.get(id(twi))
+
+        if item is not None:
+            value = item['value']
+            if isinstance(value, bool):
+                cb = QCheckBox()
+                cb.setText('%s' % value)
+                cb.setChecked(value)
+                cb.setAutoFillBackground(True)
+                self.tw_content.setItemWidget(twi, 2, cb)
+
+                def cb_changed(state):
+                    self.tw_content.removeItemWidget(twi, 2)
+                    value = bool(state)
+                    twi.setText(2, '%s' % value)
+                    item['value'] = value
+                    self.tw_content.setFocus()
+                    self.show_cb_boolean_value(twi)
+
+                cb.stateChanged.connect(cb_changed)
+                cb.setFocus()
+
     def refresh_item_keys(self, twi):
         type_str = twi.text(1)
         item = self.items[id(twi)]  # type: dict
@@ -109,11 +133,20 @@ class Form(Ui_Form, QWidget):
 
         twi.setText(2, '(%s %s)' % (len(childs), self.lang.node_items))
 
-        if type_str == 'Array':
-            if childs is not None:
-                child: QTreeWidgetItem
+        if childs is not None:
+            child: QTreeWidgetItem
+            if type_str == 'Array':
                 for index, child in enumerate(childs):
-                    child.setText(0, '%s %d' % (self.lang.node_item, index))
+                    key = '%s %d' % (self.lang.node_item, index)
+                    child.setText(0, key)
+            elif type_str == 'Object':
+                for index, child in enumerate(childs):
+                    item_child = self.items[id(child)]
+                    key = item_child['key']
+                    if key is None:
+                        key = '%s %d' % (self.lang.node_item, index)
+                    item_child['key'] = key
+                    child.setText(0, key)
 
     def callback_item_type_changed(self, twi, new, old):
         item = self.items[id(twi)]  # type: dict
@@ -128,6 +161,7 @@ class Form(Ui_Form, QWidget):
                 for child in childs:
                     twi.removeChild(child)
                     del self.items[id(child)]
+                item['value'] = len(childs)
                 del item['childs']
         else:
             if v_type_old not in [list, dict]:
@@ -135,21 +169,22 @@ class Form(Ui_Form, QWidget):
             self.refresh_item_keys(twi)
 
         value = '' if old == 'Null' else item['value']
-
         if new == 'Number':
             value = json_type_to_python(new, value, 0)
         elif v_type_new == bool:
             value = json_type_to_python(new, value, False)
         elif v_type_new == str:
             value = json_type_to_python(new, value, '')
-
-        if new == 'Null':
+        elif new == 'Null':
             value = None
-            twi.setText(2, self.lang.node_none)
-        else:
-            twi.setText(2, '%s' % value)
 
         item['value'] = value
+        if new == 'Null':
+            twi.setText(2, self.lang.node_none)
+        elif v_type_new not in [list, dict]:
+            twi.setText(2, '%s' % value)
+
+        self.callback_item_value_changed(twi, value_old, value)
 
     def _tw_content_current_changed(self, new: QModelIndex, old: QModelIndex):
         twi_old = self.tw_content.itemFromIndex(old)  # type:QTreeWidgetItem
@@ -160,6 +195,7 @@ class Form(Ui_Form, QWidget):
             twi_old.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable)
             # remove item widget will destroy widget.
             self.tw_content.removeItemWidget(twi_old, 1)
+            self.tw_content.removeItemWidget(twi_old, 2)
 
         item = self.items.get(id(twi_new))
         if item is not None:
@@ -173,7 +209,10 @@ class Form(Ui_Form, QWidget):
                 if col == 0 and json_type_to_python(item['parent'].text(1)) == dict:
                     twi_new.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable)
                 elif col == 2 and v_type not in [list, dict] and type_str != 'Null':
-                    twi_new.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable)
+                    if v_type == bool:
+                        self.show_cb_boolean_value(twi_new)
+                    else:
+                        twi_new.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable)
 
             if col == 1:
                 self.show_cb_type(twi_new)
@@ -212,8 +251,8 @@ class Form(Ui_Form, QWidget):
                 new_value_str = twi.text(col)
                 new_value = json_type_to_python(type_str, new_value_str, item['value'])
 
-                if v_type not in [list, dict]:
-                    if new_value_str == '%s' % new_value or type_str == 'Null':
+                if v_type not in [list, dict] and type_str != 'Null':
+                    if new_value_str == '%s' % new_value:
                         if old_value != new_value:
                             item['value'] = new_value
                             self.callback_item_value_changed(twi, old_value, new_value)
