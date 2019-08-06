@@ -6,3 +6,8 @@ class English(Language):
     unknown = 'Unknown Str: (%s)'
     cancel = 'Cancel'
     ok = 'OK'
+
+    node_root = 'Root'
+    node_item = 'Item'
+    node_items = 'Items'
+    node_none = '-'

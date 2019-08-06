@@ -14,8 +14,8 @@ class MainWindow(Ui_MainWindow, QMainWindow):
 
         self.lang = self.events['get_language']()  # type: English
 
-        form = Form()
-        form.load_data({'str': 'test', 'int': 123, 'float': 1.23, 'list': [1, 2, 3], 'dict': {'1': 2, '2': 3}})
+        form = Form(events=self.events)
+        form.load_data({'s1': 'test', 'i1': 123, 'f1': 1.23, 'l1': [1, 2, 3], 'd1': {'1': 2, '2': 3}, 'test': None})
         self.tw_content.addTab(form, 'test')
 
         self.setWindowTitle(Const.app_name)
