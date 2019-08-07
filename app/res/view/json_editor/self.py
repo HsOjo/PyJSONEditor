@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'self.ui'
+# JSONEditor implementation generated from reading ui file 'self.ui'
 #
 # Created by: PyQt5 UI code generator 5.11.3
 #
@@ -10,7 +10,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_Form(object):
     def setupUi(self, Form):
-        Form.setObjectName("Form")
+        Form.setObjectName("JSONEditor")
         Form.resize(928, 673)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
@@ -31,8 +31,8 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
-        self.tw_content.headerItem().setText(0, _translate("Form", "key"))
-        self.tw_content.headerItem().setText(1, _translate("Form", "type"))
-        self.tw_content.headerItem().setText(2, _translate("Form", "value"))
+        Form.setWindowTitle(_translate("JSONEditor", "JSONEditor"))
+        self.tw_content.headerItem().setText(0, _translate("JSONEditor", "key"))
+        self.tw_content.headerItem().setText(1, _translate("JSONEditor", "type"))
+        self.tw_content.headerItem().setText(2, _translate("JSONEditor", "value"))
 

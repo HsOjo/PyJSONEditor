@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'edit_area.ui'
+# JSONEditor implementation generated from reading ui file 'edit_area.ui'
 #
 # Created by: PyQt5 UI code generator 5.11.3
 #
@@ -10,7 +10,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_Form(object):
     def setupUi(self, Form):
-        Form.setObjectName("Form")
+        Form.setObjectName("JSONEditor")
         Form.resize(320, 487)
         self.gridLayout = QtWidgets.QGridLayout(Form)
         self.gridLayout.setObjectName("gridLayout")
@@ -76,12 +76,12 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
-        self.gb_area_edit.setTitle(_translate("Form", "area_edit"))
-        self.l_raw_data.setText(_translate("Form", "raw_data"))
-        self.l_translate.setText(_translate("Form", "translate"))
-        self.pb_translate.setText(_translate("Form", "translate"))
-        self.l_current_data.setText(_translate("Form", "current_data"))
-        self.pb_reset.setText(_translate("Form", "reset"))
-        self.pb_save.setText(_translate("Form", "save"))
+        Form.setWindowTitle(_translate("JSONEditor", "JSONEditor"))
+        self.gb_area_edit.setTitle(_translate("JSONEditor", "area_edit"))
+        self.l_raw_data.setText(_translate("JSONEditor", "raw_data"))
+        self.l_translate.setText(_translate("JSONEditor", "translate"))
+        self.pb_translate.setText(_translate("JSONEditor", "translate"))
+        self.l_current_data.setText(_translate("JSONEditor", "current_data"))
+        self.pb_reset.setText(_translate("JSONEditor", "reset"))
+        self.pb_save.setText(_translate("JSONEditor", "save"))
 

@@ -1,5 +1,7 @@
+import json
+
 from PyQt5.QtCore import QModelIndex, Qt
-from PyQt5.QtWidgets import QWidget, QTreeWidgetItem, QComboBox, QCheckBox
+from PyQt5.QtWidgets import QWidget, QTreeWidgetItem, QComboBox, QCheckBox, QFileDialog
 
 from app.res.language.english import English
 from app.res.view.form.self import Ui_Form
@@ -47,9 +49,9 @@ def json_type_to_python(type_str, data=None, default=None):
             return default
 
 
-class Form(Ui_Form, QWidget):
+class JSONEditor(Ui_Form, QWidget):
 
-    def __init__(self, **kwargs):
+    def __init__(self, path: str = None, **kwargs):
         super().__init__()
         self.setupUi(self)
         self.events = kwargs.get('events')  # type: dict
@@ -67,9 +69,31 @@ class Form(Ui_Form, QWidget):
         self.root_twi = None  # type: QTreeWidgetItem
         self.current_twi = None  # type: QTreeWidgetItem
 
+        self.path = path
+        if path is not None:
+            self.load_file(path)
+
+    def load_file(self, path):
+        with open(path, 'r') as io:
+            data = json.load(io)
+        self.load_data(data)
+
+    def save_file(self, path=None):
+        if path is None:
+            path = self.path
+        if path is None:
+            [path, _] = QFileDialog.getSaveFileName(
+                self, caption=self.lang.menu_save_file,
+                filter=';;'.join([self.lang.filter_json, self.lang.filter_all]))
+        if path is not None:
+            data = self.dump_data()
+            with open(path, 'w') as io:
+                json.dump(data, io, ensure_ascii=False, indent=4)
+
     @property
     def lang(self):
-        return self.events['get_language']()  # type: English
+        language = self.events['get_language']()  # type: English
+        return language
 
     def load_language(self):
         hi = self.tw_content.headerItem()  # type: QTreeWidgetItem
