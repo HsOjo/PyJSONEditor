@@ -4,6 +4,7 @@ import os
 from PyQt5.QtCore import QModelIndex, Qt
 from PyQt5.QtWidgets import QWidget, QTreeWidgetItem, QComboBox, QCheckBox, QFileDialog
 
+from app.config import CONFIG_FILE, Config
 from app.res.language.english import English
 from app.res.view.json_editor.self import Ui_Form
 
@@ -84,9 +85,17 @@ class JSONEditor(Ui_Form, QWidget):
     def title(self):
         return self._title
 
+    @property
+    def is_config(self):
+        return self._path == CONFIG_FILE
+
     def load_file(self, path):
         self._path = path
-        self._title = os.path.basename(path)
+        if self.is_config:
+            self._title = self.lang.preferences
+        else:
+            self._title = os.path.basename(path)
+
         with open(path, 'r') as io:
             data = json.load(io)
         self.load_data(data)
@@ -102,6 +111,9 @@ class JSONEditor(Ui_Form, QWidget):
             data = self.dump_data()
             with open(path, 'w') as io:
                 json.dump(data, io, ensure_ascii=False, indent=4)
+
+            if self.is_config:
+                Config.load()
 
     @property
     def lang(self):

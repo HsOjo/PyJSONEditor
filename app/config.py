@@ -29,15 +29,14 @@ class Config:
     @staticmethod
     def load():
         try:
-            if os.path.exists(CONFIG_FILE):
-                with open(CONFIG_FILE, 'r') as io:
-                    config = json.load(io)
-                    for f in Config._protect_fields:
-                        config[f] = base64.b64decode(config[f][::-1].encode()).decode()
-                    common.dict_to_object(config, Config, new_fields=False)
-                    common.log('config_load', 'Info', common.object_to_dict(Config))
+            with open(CONFIG_FILE, 'r') as io:
+                config = json.load(io)
+                for f in Config._protect_fields:
+                    config[f] = base64.b64decode(config[f][::-1].encode()).decode()
+                common.dict_to_object(config, Config, new_fields=False)
+                common.log('config_load', 'Info', common.object_to_dict(Config))
         except:
-            pass
+            Config.save()
 
     @staticmethod
     def save():
