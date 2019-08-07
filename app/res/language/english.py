@@ -32,3 +32,6 @@ class English(Language):
     menu_replace = 'Replace'
 
     menu_languages = 'Languages'
+
+    filter_all = 'All File(*)'
+    filter_json = 'JSON File(*.json)'

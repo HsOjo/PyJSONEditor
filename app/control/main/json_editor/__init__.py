@@ -1,10 +1,11 @@
 import json
+import os
 
 from PyQt5.QtCore import QModelIndex, Qt
 from PyQt5.QtWidgets import QWidget, QTreeWidgetItem, QComboBox, QCheckBox, QFileDialog
 
 from app.res.language.english import English
-from app.res.view.form.self import Ui_Form
+from app.res.view.json_editor.self import Ui_Form
 
 type_map = {
     str: 'String',
@@ -69,18 +70,30 @@ class JSONEditor(Ui_Form, QWidget):
         self.root_twi = None  # type: QTreeWidgetItem
         self.current_twi = None  # type: QTreeWidgetItem
 
-        self.path = path
+        self._path = path
+        self._title = ''
+
         if path is not None:
             self.load_file(path)
 
+    @property
+    def path(self):
+        return self._path
+
+    @property
+    def title(self):
+        return self._title
+
     def load_file(self, path):
+        self._path = path
+        self._title = os.path.basename(path)
         with open(path, 'r') as io:
             data = json.load(io)
         self.load_data(data)
 
     def save_file(self, path=None):
         if path is None:
-            path = self.path
+            path = self._path
         if path is None:
             [path, _] = QFileDialog.getSaveFileName(
                 self, caption=self.lang.menu_save_file,

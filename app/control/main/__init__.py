@@ -1,6 +1,9 @@
-from PyQt5.QtWidgets import QMainWindow, QMenu, QAction
+import os
 
-from app.control.main.form import Form
+from PyQt5.QtWidgets import QMainWindow, QMenu, QAction, QFileDialog
+
+from app.config import CONFIG_FILE
+from app.control.main.json_editor import JSONEditor
 from app.res.const import Const
 from app.res.language import LANGUAGES
 from app.res.language.english import English
@@ -12,20 +15,28 @@ class MainWindow(Ui_MainWindow, QMainWindow):
         super().__init__()
         self.setupUi(self)
         self.events = kwargs.get('events')  # type: dict
+        self.events.update({
+            'set_editor_title': self.set_editor_title,
+        })
 
         self.load_language()
         self.init_languages_menu()
 
-        form = Form(events=self.events)
-        form.load_data({'s1': 'test', 'i1': 123, 'f1': 1.23, 'l1': [1, 2, 3], 'd1': {'1': 2, '2': 3}, 'test': None})
-        print('dump: %s' % form.dump_data())
-        self.tw_content.addTab(form, 'test')
-
         self.setWindowTitle(Const.app_name)
+
+        self.editors = []
+        self.editor_current = None  # type: JSONEditor
+        self.open_file(CONFIG_FILE)
+
+        self.tw_content.currentChanged.connect(self._tw_content_current_changed)
+        self.a_open_file.triggered.connect(lambda _: self.open_file())
+        self.a_save_file.triggered.connect(lambda _: self.save_file())
+        self.a_close_file.triggered.connect(lambda _: self.close_file())
 
     @property
     def lang(self):
-        return self.events['get_language']()  # type: English
+        language = self.events['get_language']()  # type: English
+        return language
 
     def load_language(self):
         for key in dir(self):
@@ -46,3 +57,34 @@ class MainWindow(Ui_MainWindow, QMainWindow):
     def set_language(self, language):
         self.events['set_language'](language)
         self.load_language()
+
+    def set_editor_title(self, editor: JSONEditor, title):
+        if editor in self.editors:
+            index = self.editors.index(editor)
+            self.tw_content.setTabText(index, title)
+
+    def _tw_content_current_changed(self, index):
+        if 0 <= index < len(self.editors):
+            self.editor_current = self.editors[index]
+
+    def open_file(self, path=None):
+        if path is None:
+            [path, _] = QFileDialog.getOpenFileName(
+                self, caption=self.lang.menu_open_file,
+                filter=';;'.join([self.lang.filter_json, self.lang.filter_all]))
+        if path is not None and os.path.exists(path):
+            editor = JSONEditor(path, events=self.events)
+            self.editors.append(editor)
+            self.tw_content.addTab(editor, editor.title)
+            self.tw_content.setCurrentWidget(editor)
+            if self.editor_current is None:
+                self.editor_current = editor
+
+    def save_file(self):
+        self.editor_current.save_file()
+
+    def close_file(self):
+        if self.editor_current in self.editors:
+            index = self.editors.index(self.editor_current)
+            self.tw_content.removeTab(index)
+            self.editors.remove(self.editor_current)
