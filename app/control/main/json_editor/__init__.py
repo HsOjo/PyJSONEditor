@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QWidget, QTreeWidgetItem, QComboBox, QCheckBox, QFil
 
 from app.config import CONFIG_FILE, Config
 from app.res.language.english import English
-from app.res.view.json_editor.self import Ui_Form
+from app.res.view.json_editor.self import Ui_JSONEditor
 
 type_map = {
     str: 'String',
@@ -51,7 +51,7 @@ def json_type_to_python(type_str, data=None, default=None):
             return default
 
 
-class JSONEditor(Ui_Form, QWidget):
+class JSONEditor(Ui_JSONEditor, QWidget):
 
     def __init__(self, path: str = None, **kwargs):
         super().__init__()

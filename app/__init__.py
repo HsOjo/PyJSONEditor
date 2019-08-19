@@ -51,7 +51,7 @@ class Application:
             self.export_log()
 
     def export_log(self):
-        [folder, _] = QFileDialog.getExistingDirectory(None, caption=self.lang.menu_export_log)
+        folder = QFileDialog.getExistingDirectory(None, caption=self.lang.menu_export_log)
         if folder is not None:
             log = common.extract_log()
             err = common.extract_err()

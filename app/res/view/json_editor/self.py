@@ -1,21 +1,22 @@
 # -*- coding: utf-8 -*-
 
-# JSONEditor implementation generated from reading ui file 'self.ui'
+# Form implementation generated from reading ui file 'self.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("JSONEditor")
-        Form.resize(928, 673)
-        self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
-        self.horizontalLayout.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
+
+class Ui_JSONEditor(object):
+    def setupUi(self, JSONEditor):
+        JSONEditor.setObjectName("JSONEditor")
+        JSONEditor.resize(400, 300)
+        self.horizontalLayout = QtWidgets.QHBoxLayout(JSONEditor)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.tw_content = QtWidgets.QTreeWidget(Form)
+        self.tw_content = QtWidgets.QTreeWidget(JSONEditor)
         self.tw_content.setTabKeyNavigation(True)
         self.tw_content.setAlternatingRowColors(True)
         self.tw_content.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
@@ -26,13 +27,12 @@ class Ui_Form(object):
         self.tw_content.setObjectName("tw_content")
         self.horizontalLayout.addWidget(self.tw_content)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        self.retranslateUi(JSONEditor)
+        QtCore.QMetaObject.connectSlotsByName(JSONEditor)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self, JSONEditor):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("JSONEditor", "JSONEditor"))
+        JSONEditor.setWindowTitle(_translate("JSONEditor", "JSONEditor"))
         self.tw_content.headerItem().setText(0, _translate("JSONEditor", "key"))
         self.tw_content.headerItem().setText(1, _translate("JSONEditor", "type"))
         self.tw_content.headerItem().setText(2, _translate("JSONEditor", "value"))
-

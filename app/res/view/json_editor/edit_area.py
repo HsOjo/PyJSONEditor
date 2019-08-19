@@ -1,20 +1,22 @@
 # -*- coding: utf-8 -*-
 
-# JSONEditor implementation generated from reading ui file 'edit_area.ui'
+# Form implementation generated from reading ui file 'edit_area.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("JSONEditor")
-        Form.resize(320, 487)
-        self.gridLayout = QtWidgets.QGridLayout(Form)
+
+class Ui_EditArea(object):
+    def setupUi(self, EditArea):
+        EditArea.setObjectName("EditArea")
+        EditArea.resize(320, 487)
+        self.gridLayout = QtWidgets.QGridLayout(EditArea)
         self.gridLayout.setObjectName("gridLayout")
-        self.gb_area_edit = QtWidgets.QGroupBox(Form)
+        self.gb_area_edit = QtWidgets.QGroupBox(EditArea)
         self.gb_area_edit.setObjectName("gb_area_edit")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.gb_area_edit)
         self.gridLayout_2.setObjectName("gridLayout_2")
@@ -71,17 +73,16 @@ class Ui_Form(object):
         self.gridLayout_2.addLayout(self.horizontalLayout, 3, 0, 1, 1)
         self.gridLayout.addWidget(self.gb_area_edit, 0, 0, 1, 1)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        self.retranslateUi(EditArea)
+        QtCore.QMetaObject.connectSlotsByName(EditArea)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self, EditArea):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("JSONEditor", "JSONEditor"))
-        self.gb_area_edit.setTitle(_translate("JSONEditor", "area_edit"))
-        self.l_raw_data.setText(_translate("JSONEditor", "raw_data"))
-        self.l_translate.setText(_translate("JSONEditor", "translate"))
-        self.pb_translate.setText(_translate("JSONEditor", "translate"))
-        self.l_current_data.setText(_translate("JSONEditor", "current_data"))
-        self.pb_reset.setText(_translate("JSONEditor", "reset"))
-        self.pb_save.setText(_translate("JSONEditor", "save"))
-
+        EditArea.setWindowTitle(_translate("EditArea", "EditArea"))
+        self.gb_area_edit.setTitle(_translate("EditArea", "area_edit"))
+        self.l_raw_data.setText(_translate("EditArea", "raw_data"))
+        self.l_translate.setText(_translate("EditArea", "translate"))
+        self.pb_translate.setText(_translate("EditArea", "translate"))
+        self.l_current_data.setText(_translate("EditArea", "current_data"))
+        self.pb_reset.setText(_translate("EditArea", "reset"))
+        self.pb_save.setText(_translate("EditArea", "save"))
