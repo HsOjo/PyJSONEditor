@@ -7,6 +7,7 @@ class English(Language):
     cancel = 'Cancel'
     ok = 'OK'
     preferences = 'Preferences'
+    untitled = 'Untitled'
 
     node_root = 'Root'
     node_item = 'Item'
@@ -19,8 +20,11 @@ class English(Language):
     col_value = 'Value'
 
     menu_file = 'File'
+    menu_new_file = 'New File'
     menu_open_file = 'Open File'
     menu_save_file = 'Save File'
+    menu_save_file_as = 'Save As...'
+    menu_save_file_all = 'Save All'
     menu_close_file = 'Close File'
 
     menu_edit = 'Edit'
@@ -31,6 +35,10 @@ class English(Language):
     menu_paste = 'Paste'
     menu_find = 'Find'
     menu_replace = 'Replace'
+
+    menu_view = 'View'
+    menu_previous_file = 'Previous File'
+    menu_next_file = 'Next File'
 
     menu_languages = 'Languages'
 

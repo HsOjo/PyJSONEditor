@@ -29,9 +29,18 @@ class MainWindow(Ui_MainWindow, QMainWindow):
         self.open_file(CONFIG_FILE)
 
         self.tw_content.currentChanged.connect(self._tw_content_current_changed)
+        self.a_new_file.triggered.connect(lambda _: self.new_file())
         self.a_open_file.triggered.connect(lambda _: self.open_file())
-        self.a_save_file.triggered.connect(lambda _: self.save_file())
+        self.a_save_file.triggered.connect(lambda _: self.editor_current.save_file())
+        self.a_save_file_as.triggered.connect(lambda _: self.editor_current.save_file(save_as=True))
+        self.a_save_file_all.triggered.connect(lambda _: [editor.save_file() for editor in self.editors])
         self.a_close_file.triggered.connect(lambda _: self.close_file())
+        self.a_previous_file.triggered.connect(
+            lambda _: self.tw_content.setCurrentIndex(self.tw_content.currentIndex() - 1))
+        self.a_next_file.triggered.connect(
+            lambda _: self.tw_content.setCurrentIndex(self.tw_content.currentIndex() + 1))
+
+        self.new_count = 0
 
     @property
     def lang(self):
@@ -67,6 +76,18 @@ class MainWindow(Ui_MainWindow, QMainWindow):
         if 0 <= index < len(self.editors):
             self.editor_current = self.editors[index]
 
+    def add_editor(self, editor, to_current=True):
+        self.editors.append(editor)
+        self.tw_content.addTab(editor, editor.title)
+        if to_current or self.editor_current is None:
+            self.tw_content.setCurrentWidget(editor)
+            self.editor_current = editor
+
+    def new_file(self):
+        self.new_count += 1
+        editor = JSONEditor(events=self.events, title='%s %d' % (self.lang.untitled, self.new_count))
+        self.add_editor(editor)
+
     def open_file(self, path=None):
         if path is None:
             [path, _] = QFileDialog.getOpenFileName(
@@ -74,14 +95,7 @@ class MainWindow(Ui_MainWindow, QMainWindow):
                 filter=';;'.join([self.lang.filter_json, self.lang.filter_all]))
         if path is not None and os.path.exists(path):
             editor = JSONEditor(path, events=self.events)
-            self.editors.append(editor)
-            self.tw_content.addTab(editor, editor.title)
-            self.tw_content.setCurrentWidget(editor)
-            if self.editor_current is None:
-                self.editor_current = editor
-
-    def save_file(self):
-        self.editor_current.save_file()
+            self.add_editor(editor)
 
     def close_file(self):
         if self.editor_current in self.editors:

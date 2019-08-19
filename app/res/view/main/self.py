@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# JSONEditor implementation generated from reading ui file 'self.ui'
+# Form implementation generated from reading ui file 'self.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -29,6 +31,8 @@ class Ui_MainWindow(object):
         self.m_edit.setObjectName("m_edit")
         self.m_languages = QtWidgets.QMenu(self.menubar)
         self.m_languages.setObjectName("m_languages")
+        self.m_view = QtWidgets.QMenu(self.menubar)
+        self.m_view.setObjectName("m_view")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -55,8 +59,23 @@ class Ui_MainWindow(object):
         self.a_find.setObjectName("a_find")
         self.a_replace = QtWidgets.QAction(MainWindow)
         self.a_replace.setObjectName("a_replace")
+        self.a_new_file = QtWidgets.QAction(MainWindow)
+        self.a_new_file.setObjectName("a_new_file")
+        self.a_previous_file = QtWidgets.QAction(MainWindow)
+        self.a_previous_file.setObjectName("a_previous_file")
+        self.a_next_file = QtWidgets.QAction(MainWindow)
+        self.a_next_file.setObjectName("a_next_file")
+        self.a_save_file_as = QtWidgets.QAction(MainWindow)
+        self.a_save_file_as.setObjectName("a_save_file_as")
+        self.a_save_file_all = QtWidgets.QAction(MainWindow)
+        self.a_save_file_all.setObjectName("a_save_file_all")
+        self.m_file.addAction(self.a_new_file)
         self.m_file.addAction(self.a_open_file)
+        self.m_file.addSeparator()
         self.m_file.addAction(self.a_save_file)
+        self.m_file.addAction(self.a_save_file_as)
+        self.m_file.addAction(self.a_save_file_all)
+        self.m_file.addSeparator()
         self.m_file.addAction(self.a_close_file)
         self.m_edit.addAction(self.a_undo)
         self.m_edit.addAction(self.a_redo)
@@ -67,8 +86,11 @@ class Ui_MainWindow(object):
         self.m_edit.addSeparator()
         self.m_edit.addAction(self.a_find)
         self.m_edit.addAction(self.a_replace)
+        self.m_view.addAction(self.a_previous_file)
+        self.m_view.addAction(self.a_next_file)
         self.menubar.addAction(self.m_file.menuAction())
         self.menubar.addAction(self.m_edit.menuAction())
+        self.menubar.addAction(self.m_view.menuAction())
         self.menubar.addAction(self.m_languages.menuAction())
 
         self.retranslateUi(MainWindow)
@@ -80,6 +102,7 @@ class Ui_MainWindow(object):
         self.m_file.setTitle(_translate("MainWindow", "file"))
         self.m_edit.setTitle(_translate("MainWindow", "edit"))
         self.m_languages.setTitle(_translate("MainWindow", "languages"))
+        self.m_view.setTitle(_translate("MainWindow", "m_view"))
         self.a_open_file.setText(_translate("MainWindow", "open_file"))
         self.a_open_file.setShortcut(_translate("MainWindow", "Ctrl+O"))
         self.a_close.setText(_translate("MainWindow", "close"))
@@ -102,4 +125,13 @@ class Ui_MainWindow(object):
         self.a_find.setShortcut(_translate("MainWindow", "Ctrl+F"))
         self.a_replace.setText(_translate("MainWindow", "replace"))
         self.a_replace.setShortcut(_translate("MainWindow", "Ctrl+R"))
-
+        self.a_new_file.setText(_translate("MainWindow", "new_file"))
+        self.a_new_file.setShortcut(_translate("MainWindow", "Ctrl+N"))
+        self.a_previous_file.setText(_translate("MainWindow", "a_previous_file"))
+        self.a_previous_file.setShortcut(_translate("MainWindow", "Ctrl+["))
+        self.a_next_file.setText(_translate("MainWindow", "a_next_file"))
+        self.a_next_file.setShortcut(_translate("MainWindow", "Ctrl+]"))
+        self.a_save_file_as.setText(_translate("MainWindow", "save_file_as"))
+        self.a_save_file_as.setShortcut(_translate("MainWindow", "Ctrl+Shift+S"))
+        self.a_save_file_all.setText(_translate("MainWindow", "save_file_all"))
+        self.a_save_file_all.setShortcut(_translate("MainWindow", "Ctrl+Alt+S"))

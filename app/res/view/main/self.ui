@@ -33,8 +33,13 @@
     <property name="title">
      <string>file</string>
     </property>
+    <addaction name="a_new_file"/>
     <addaction name="a_open_file"/>
+    <addaction name="separator"/>
     <addaction name="a_save_file"/>
+    <addaction name="a_save_file_as"/>
+    <addaction name="a_save_file_all"/>
+    <addaction name="separator"/>
     <addaction name="a_close_file"/>
    </widget>
    <widget class="QMenu" name="m_edit">
@@ -56,8 +61,16 @@
      <string>languages</string>
     </property>
    </widget>
+   <widget class="QMenu" name="m_view">
+    <property name="title">
+     <string>m_view</string>
+    </property>
+    <addaction name="a_previous_file"/>
+    <addaction name="a_next_file"/>
+   </widget>
    <addaction name="m_file"/>
    <addaction name="m_edit"/>
+   <addaction name="m_view"/>
    <addaction name="m_languages"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -147,6 +160,46 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="a_new_file">
+   <property name="text">
+    <string>new_file</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="a_previous_file">
+   <property name="text">
+    <string>a_previous_file</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+[</string>
+   </property>
+  </action>
+  <action name="a_next_file">
+   <property name="text">
+    <string>a_next_file</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+]</string>
+   </property>
+  </action>
+  <action name="a_save_file_as">
+   <property name="text">
+    <string>save_file_as</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="a_save_file_all">
+   <property name="text">
+    <string>save_file_all</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+S</string>
    </property>
   </action>
  </widget>

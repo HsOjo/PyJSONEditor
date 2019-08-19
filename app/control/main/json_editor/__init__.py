@@ -55,8 +55,12 @@ class JSONEditor(Ui_JSONEditor, QWidget):
 
     def __init__(self, path: str = None, **kwargs):
         super().__init__()
-        self.setupUi(self)
         self.events = kwargs.get('events')  # type: dict
+
+        self._path = path
+        self._title = kwargs.get('title', self.lang.untitled)
+
+        self.setupUi(self)
 
         self.load_language()
 
@@ -71,15 +75,23 @@ class JSONEditor(Ui_JSONEditor, QWidget):
         self.root_twi = None  # type: QTreeWidgetItem
         self.current_twi = None  # type: QTreeWidgetItem
 
-        self._path = path
-        self._title = ''
-
         if path is not None:
             self.load_file(path)
+        else:
+            self.load_data({})
 
     @property
     def path(self):
         return self._path
+
+    @path.setter
+    def path(self, path):
+        self._path = path
+        if self.is_config:
+            self._title = self.lang.preferences
+        else:
+            self._title = os.path.basename(self._path)
+        self.events['set_editor_title'](self, self._title)
 
     @property
     def title(self):
@@ -90,24 +102,21 @@ class JSONEditor(Ui_JSONEditor, QWidget):
         return self._path == CONFIG_FILE
 
     def load_file(self, path):
-        self._path = path
-        if self.is_config:
-            self._title = self.lang.preferences
-        else:
-            self._title = os.path.basename(path)
+        self.path = path
 
         with open(path, 'r') as io:
             data = json.load(io)
         self.load_data(data)
 
-    def save_file(self, path=None):
+    def save_file(self, path=None, save_as=False):
         if path is None:
             path = self._path
-        if path is None:
+        if path is None or save_as:
             [path, _] = QFileDialog.getSaveFileName(
-                self, caption=self.lang.menu_save_file,
+                self, caption=self.lang.menu_save_file, directory=self.title,
                 filter=';;'.join([self.lang.filter_json, self.lang.filter_all]))
-        if path is not None:
+            self.path = path
+        if path is not None and path != '':
             data = self.dump_data()
             with open(path, 'w') as io:
                 json.dump(data, io, ensure_ascii=False, indent=4)
