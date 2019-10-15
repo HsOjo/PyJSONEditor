@@ -2,7 +2,7 @@ import os
 
 from PyQt5.QtWidgets import QMainWindow, QMenu, QAction, QFileDialog
 
-from app.config import CONFIG_FILE
+from app.base.config import CONFIG_PATH
 from app.control.main.json_editor import JSONEditor
 from app.res.const import Const
 from app.res.language import LANGUAGES
@@ -26,7 +26,7 @@ class MainWindow(Ui_MainWindow, QMainWindow):
 
         self.editors = []
         self.editor_current = None  # type: JSONEditor
-        self.open_file(CONFIG_FILE)
+        self.open_file(CONFIG_PATH)
 
         self.tw_content.currentChanged.connect(self._tw_content_current_changed)
         self.a_new_file.triggered.connect(lambda _: self.new_file())

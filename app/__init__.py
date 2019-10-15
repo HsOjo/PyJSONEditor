@@ -2,7 +2,9 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QMessageBox, QFileDialog
 
 from app import common
-from .config import Config
+from app.config import Config
+from app.util import pyinstaller
+from app.util.log import Log
 from .control import init_app
 from .res.const import Const
 from .res.language import load_language
@@ -12,15 +14,17 @@ from .util import github
 
 class Application:
     def __init__(self, args):
-        common.log('app_init', 'Info', 'version: %s' % Const.version)
+        Log.append('app_init', 'Info', 'version: %s' % Const.version)
 
         self.qt = QApplication(args)
         self.qt.setApplicationName(Const.app_name)
-        self.qt.setWindowIcon(QIcon('%s/app/res/icon.png' % common.get_runtime_dir()))
+        self.qt.setWindowIcon(QIcon('%s/app/res/icon.png' % pyinstaller.get_runtime_dir()))
 
-        Config.load()
+        self.config = Config()
+        self.config.load()
+
         self.lang = None  # type: English
-        self.load_language(Config.language)
+        self.load_language(self.config.language)
 
         self.events = {
             'process_events': self.qt.processEvents,
@@ -29,6 +33,7 @@ class Application:
             'load_language': self.load_language,
             'get_language': lambda: self.lang,
             'set_language': self.set_language,
+            'get_config': lambda: self.config,
         }
 
     def load_language(self, language):
@@ -36,8 +41,8 @@ class Application:
 
     def set_language(self, language):
         self.lang = load_language(language)
-        Config.language = language
-        Config.save()
+        self.config.language = language
+        self.config.save()
 
     def run(self):
         init_app(events=self.events)
@@ -45,7 +50,7 @@ class Application:
 
     def callback_exception(self):
         exc = common.get_exception()
-        common.log(self.callback_exception, 'Error', exc)
+        Log.append(self.callback_exception, 'Error', exc)
 
         if QMessageBox.warning(None, self.lang.title_crash, self.lang.description_crash):
             self.export_log()
@@ -56,7 +61,7 @@ class Application:
             log = common.extract_log()
             err = common.extract_err()
 
-            for f in Config._protect_fields:
+            for f in self.config._protect_fields:
                 v = getattr(Config, f, '')
                 if v != '':
                     log = log.replace(v, Const.protector)
@@ -73,7 +78,7 @@ class Application:
     def check_update(self, test=False):
         try:
             release = github.get_latest_release(Const.author, Const.app_name, timeout=5)
-            common.log(self.check_update, 'Info', release)
+            Log.append(self.check_update, 'Info', release)
 
             if test or common.compare_version(Const.version, release['tag_name']):
                 if len(release['assets']) > 0:
@@ -85,4 +90,4 @@ class Application:
                         self.lang.description_new_version,
                         release['body'], release['assets'][0]['browser_download_url']))
         except:
-            common.log(self.check_update, 'Warning', common.get_exception())
+            Log.append(self.check_update, 'Warning', common.get_exception())
